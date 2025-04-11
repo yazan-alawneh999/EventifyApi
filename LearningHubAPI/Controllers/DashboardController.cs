@@ -61,17 +61,15 @@ public class DashboardController:ControllerBase
     [HttpPut("UpdateUser/{userId}")]
     [Authorize] // logged in 
     [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })] // 1 admin ,2 org , 3 user 
-    public async Task<IActionResult> UpdateUser([FromRoute] int userId ,[FromBody]  UpdateUserDto dto)
+    public async Task<IActionResult> UpdateUser([FromRoute] int userId, [FromBody] UpdateUserProfileDto dto)
     {
         if (!await _authRepo.UserExistsAsync(userId))
+        {
             return NotFound("User not found");
+        }
+       
+        return Ok(await _dashboardService.UpdateUserAsync(userId, dto));
 
-        var updated = await _dashboardService.UpdateUserAsync(userId, dto);
-
-        if (!updated)
-            return StatusCode(500, "Failed to update user");
-
-        return Ok(new { message = "User updated successfully" });
         
     }
     
