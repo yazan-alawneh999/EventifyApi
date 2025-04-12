@@ -12,7 +12,7 @@ namespace LearningHub.Core.Repository
 
         List<SalesReportDto> GetSalesRrport();
         AttendanceDto GetAttendanceReport(int id);
-
+        List<TicketInfo> GetAttendaseList(decimal id);
 
     }
 }

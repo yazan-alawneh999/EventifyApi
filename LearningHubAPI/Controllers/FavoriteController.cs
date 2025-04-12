@@ -18,35 +18,46 @@ namespace LearningHubAPI.Controllers
         {
             this.favoriteService = favoriteService;
         }
+
+
+
         [Authorize]
         [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })]
         [HttpGet]
         [Route("getAllFavorites")]
-        public List<Favorite> getAllFavorites() 
+        public List<Favorite> getAllFavorites()
         {
             return favoriteService.getAllFavorites();
         }
+
+
         [HttpGet]
         [Route("getFavoriteByID/{ID}")]
-        public Favorite getFavoriteByID(int ID) 
+        public Favorite getFavoriteByID(int ID)
         {
-             return favoriteService.getFavoriteByID(ID);
+            return favoriteService.getFavoriteByID(ID);
         }
+
+
         [HttpPost]
         [Route("CreateFavorite")]
         public void CreateFavorite(Favorite favorite)
         {
             favoriteService.CreateFavorite(favorite);
         }
+
+
         [HttpPut]
         [Route("UpdateFavorite")]
-        public void UpdateFavorite(Favorite favorite) 
+        public void UpdateFavorite(Favorite favorite)
         {
             favoriteService.UpdateFavorite(favorite);
         }
+
+
         [HttpDelete]
         [Route("deleteFavorite/{ID}")]
-        public void deleteFavorite(int ID) 
+        public void deleteFavorite(int ID)
         {
             favoriteService.deleteFavorite(ID);
         }

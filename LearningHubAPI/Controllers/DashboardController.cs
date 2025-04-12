@@ -10,24 +10,24 @@ namespace LearningHubAPI.Controllers;
 
 [ApiController]
 [Route("api/event-manager/admin-dashboard")]
-public class DashboardController:ControllerBase
+public class DashboardController : ControllerBase
 {
-    
+
     private readonly IAuthRepo _authRepo;
     private readonly IDashboardService _dashboardService;
     private readonly IProfileRepository _profileRepository;
 
-    public DashboardController(IAuthRepo authRepo,IDashboardService dashboardService,IProfileRepository profileRepository)
+    public DashboardController(IAuthRepo authRepo, IDashboardService dashboardService, IProfileRepository profileRepository)
     {
         _authRepo = authRepo;
         _dashboardService = dashboardService;
         _profileRepository = profileRepository;
 
-        
+
     }
     [HttpGet("AllRegisteredUsers")]
     [Authorize]
-    [IdentityRequiresClaims(ClaimTypes.Role,new[]{"1"})]
+    [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })]
     public async Task<IActionResult> AllRegisteredUsers()
     {
         var users = await _authRepo.GetAllUsersAsync();
@@ -36,7 +36,7 @@ public class DashboardController:ControllerBase
 
     [HttpGet("All-Roles")]
     [Authorize]
-    [IdentityRequiresClaims(ClaimTypes.Role,new[]{"1"})]
+    [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })]
     public async Task<IActionResult> GetAllRoles()
     {
         return Ok(await _dashboardService.GetRoles());
@@ -45,19 +45,19 @@ public class DashboardController:ControllerBase
     [HttpPut("UpdateProfile/{userId}")]
     [Authorize] // logged in 
     [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })] // 1 admin ,2 org , 3 user 
-    public async Task<IActionResult> UpdateProfile([FromRoute] decimal userId ,[FromForm]  ProfileDto dto)
+    public async Task<IActionResult> UpdateProfile([FromRoute] decimal userId, [FromForm] ProfileDto dto)
     {
         if (!await _authRepo.UserExistsAsync(userId))
         {
             return NotFound("User not found");
         }
-       
+
         return Ok(await _profileRepository.UpdateProfile(userId, dto));
 
-        
+
     }
-    
-    
+
+
     [HttpPut("UpdateUser/{userId}")]
     [Authorize] // logged in 
     [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })] // 1 admin ,2 org , 3 user 
@@ -67,11 +67,11 @@ public class DashboardController:ControllerBase
         {
             return NotFound("User not found");
         }
-       
+
         return Ok(await _dashboardService.UpdateUserAsync(userId, dto));
 
-        
+
     }
-    
-   
+
+
 }

@@ -16,18 +16,18 @@ namespace LearningHubAPI.Controllers
         {
             _notificationService = notificationService;
         }
-       
+
         [HttpGet]
         [Route("getAllNotifications")]
-        public List<Notification> getAllNotifications() 
+        public List<Notification> getAllNotifications()
         {
-            return _notificationService.getAllNotifications(); 
+            return _notificationService.getAllNotifications();
         }
         [HttpGet]
         [Route("getNotificationByID/{ID}")]
         public Notification getNotificationByID(int ID)
         {
-            return _notificationService.getNotificationByID(ID);    
+            return _notificationService.getNotificationByID(ID);
         }
         [HttpGet]
         [Route("getNotificationByUserID/{IDuser}")]
@@ -38,13 +38,13 @@ namespace LearningHubAPI.Controllers
 
         [HttpPost]
         [Route("CreateNotification")]
-        public void CreateNotification(Notification notification) 
+        public void CreateNotification(Notification notification)
         {
             _notificationService.CreateNotification(notification);
         }
         [HttpPut]
         [Route("UpdateNotification")]
-        public void UpdateNotification(Notification notification) 
+        public void UpdateNotification(Notification notification)
         {
             _notificationService.UpdateNotification(notification);
         }

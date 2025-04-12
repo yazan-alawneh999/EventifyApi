@@ -9,6 +9,6 @@ namespace LearningHub.Core.Repository
 {
     public interface IBuyTicketRepository
     {
-        public int BuyTicket(BuyTicket TicketInfo, String qrText); // todo: return boolean 
+        public bool BuyTicket(BuyTicket TicketInfo, String qrText); 
     }
 }

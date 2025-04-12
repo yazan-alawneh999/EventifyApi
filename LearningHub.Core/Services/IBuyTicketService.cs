@@ -9,6 +9,6 @@ namespace LearningHub.Core.Services
 {
     public interface IBuyTicketService
     {
-        public int BuyTicket(BuyTicket TicketInfo);
+        public bool BuyTicket(BuyTicket TicketInfo);
     }
 }

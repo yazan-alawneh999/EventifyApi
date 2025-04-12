@@ -23,8 +23,8 @@ namespace LearningHub.Infra.Repository
        public List<SalesReportDto> GetSalesRrport()
         {
             
-            IEnumerable<SalesReportDto> result = _dbContext.DbConnection.Query<SalesReportDto>("REPORTS.GetTicketSalesReport", commandType: CommandType.StoredProcedure).ToList();
-            return (List<SalesReportDto>)result;
+            var result = _dbContext.DbConnection.Query<SalesReportDto>("REPORTS.GetTicketSalesReport", commandType: CommandType.StoredProcedure).ToList();
+            return result;
         }
 
         public AttendanceDto GetAttendanceReport(int id)
@@ -32,6 +32,14 @@ namespace LearningHub.Infra.Repository
             var p = new DynamicParameters();
             p.Add("EvtID", id,dbType:DbType.Int32);
             var result = _dbContext.DbConnection.Query<AttendanceDto>("REPORTS.AttendanceReports", p, commandType: CommandType.StoredProcedure).SingleOrDefault();
+            return result;
+        }
+
+
+        public List<TicketInfo> GetAttendaseList(decimal id) {
+            var p = new DynamicParameters();
+            p.Add("O_eventId", id, dbType: DbType.Int32);
+            var result = _dbContext.DbConnection.Query<TicketInfo>("REPORTS.GetAttendeeList", p, commandType: CommandType.StoredProcedure).ToList();
             return result;
         }
 

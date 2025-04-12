@@ -39,6 +39,13 @@ builder.Services.AddScoped<IFeedbackService, FeedbackService>();
 builder.Services.AddScoped<ILocationRepository, LocationRepository>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 
+builder.Services.AddScoped<IReportsRepository, ReportsRepository>();
+builder.Services.AddScoped<IReportsService, ReportsService>();
+builder.Services.AddScoped<IBuyTicketRepository, BuyTicketRepository>();
+builder.Services.AddScoped<IBuyTicketService, BuyTicketService>();
+builder.Services.AddScoped<QRCodeService>();
+builder.Services.AddScoped<QRCode>();
+
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {

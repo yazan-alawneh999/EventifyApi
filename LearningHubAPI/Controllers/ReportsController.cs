@@ -23,7 +23,7 @@ namespace LearningHubAPI.Controllers
         [HttpGet]
         [Route("GetSalesReport")]
         [Authorize]
-        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })]
+        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1", "2" })]
         public List<SalesReportDto> GetSalesRrport()
         {
             return _reportsService.GetSalesRrport();
@@ -33,10 +33,18 @@ namespace LearningHubAPI.Controllers
         [HttpGet]
         [Route("GetAttendanceReport/{id}")]
         [Authorize]
-        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })]
-        public AttendanceDto GetAttendanceReport([FromBody] int id)
+        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1","2" })]
+        public AttendanceDto GetAttendanceReport(int id)
         {
             return _reportsService.GetAttendanceReport(id);
+        }
+
+        [HttpGet]
+        [Route("GetAttendanceList/{id}")]
+        [Authorize]
+        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1", "2" })]
+        public List<TicketInfo> GetAttendaseList(decimal id) {
+            return _reportsService.GetAttendaseList(id);
         }
     }
 }

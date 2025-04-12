@@ -19,7 +19,7 @@ namespace LearningHub.Infra.Services
             _qrCodeService = qrCodeService;
         }
 
-        public int BuyTicket(BuyTicket TicketInfo)
+        public bool BuyTicket(BuyTicket TicketInfo)
         {
 
             string code = _qrCodeService.GenerateQRCodeText(TicketInfo.t_EventID, TicketInfo.t_UserID);
