@@ -26,5 +26,10 @@ namespace LearningHub.Infra.Services
         {
             return _reportsRepository.GetAttendanceReport(id);
         }
+
+        public List<TicketInfo> GetAttendaseList(decimal id)
+        { 
+            return _reportsRepository.GetAttendaseList(id);
+        }
     }
 }

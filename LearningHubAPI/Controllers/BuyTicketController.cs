@@ -15,12 +15,16 @@ namespace LearningHubAPI.Controllers
     {
         private readonly IBuyTicketService _buyTicketService;
         private readonly IAuthRepo _authRepo;
+        private readonly IEventService _eventService;
+        private readonly IReportsService _reportsService;
 
 
-        public BuyTicketController(IBuyTicketService buyTicketService, IAuthRepo authRepo)
+        public BuyTicketController(IBuyTicketService buyTicketService, IAuthRepo authRepo,IEventService eventService,IReportsService reportsService)
         {
             _buyTicketService = buyTicketService;
             _authRepo = authRepo;
+            _eventService = eventService;
+            _reportsService = reportsService;
         }
 
         [HttpPost]
@@ -28,38 +32,32 @@ namespace LearningHubAPI.Controllers
         [IdentityRequiresClaims(ClaimTypes.Role, new[] { "3" })]
         public async Task<IActionResult> BuyTicket([FromBody] BuyTicket TicketInfo)
         {
+            int eventID = (int)TicketInfo.t_EventID;
             if (TicketInfo == null)
             {
                 return  BadRequest("invalid info");
             }
 
-            // handle not found exceptions - eventId , userId 
+            if (_eventService.getEventByID(eventID) == null)
+            {
+                return BadRequest("invalid EventID");
+            }
+
+
             if (!await _authRepo.UserExistsAsync(TicketInfo.t_UserID))
             {
                 return NotFound("User not found");
             }
-            if (!(_buyTicketService.BuyTicket(TicketInfo) > 0 )){
+
+            if (_buyTicketService.BuyTicket(TicketInfo)==false){
                 return BadRequest("faild creation");
             }
 
-
-
-              return Ok(new {message =  "success" }); 
-        }
-
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> tickitDetails(int ticket)
-        {
-            //if (ticket == 0)
-            //{
-            //    return BadRequest("invalid info");
-            //}
-
-
-
-
-            return Ok("success");
+            if (_eventService.getEventByID(eventID).Capacity <= _reportsService.GetAttendanceReport(eventID).TOTAL_TICKETS) 
+            {
+                return BadRequest("The Event is Full");
+            }
+             return Ok(new {message =  "success" }); 
         }
     }
 }

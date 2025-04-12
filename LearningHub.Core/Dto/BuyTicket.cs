@@ -13,7 +13,6 @@ namespace LearningHub.Core.Dto
         public string t_TicketType { get; set; }
         public decimal t_Price { get; set; }
         public string t_Discount {  get; set; }
-        public int Returned_Status { get; set; } // todo:remove 
 
     }
 }

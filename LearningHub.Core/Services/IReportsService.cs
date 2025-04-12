@@ -11,6 +11,7 @@ namespace LearningHub.Core.Services
     {
         List<SalesReportDto> GetSalesRrport();
         AttendanceDto GetAttendanceReport(int id);
+        List<TicketInfo> GetAttendaseList(decimal id);
 
     }
 }
