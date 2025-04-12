@@ -24,28 +24,37 @@ namespace LearningHubAPI.Controllers
         [Route("getAllFeedback")]
         public List<Feedback> getAllFeedbacks()
         {
-          return  feedbackService.getAllFeedbacks();
+            return feedbackService.getAllFeedbacks();
         }
+
+
         [HttpGet]
         [Route("getFeedbackByID/{ID}")]
-        public Feedback getFeedbackByID(int ID) {
-          return  feedbackService.getFeedbackByID(ID);        
+        public Feedback getFeedbackByID(int ID)
+        {
+            return feedbackService.getFeedbackByID(ID);
         }
+
+
         [HttpPost]
         [Route("CreateFeedback")]
-        public void CreateFeedback(Feedback feedback) 
+        public void CreateFeedback(Feedback feedback)
         {
             feedbackService.CreateFeedback(feedback);
         }
+
+
         [HttpPut]
         [Route("UpdateFeedback")]
         public void UpdateFeedback(Feedback feedback)
         {
             feedbackService.UpdateFeedback(feedback);
         }
+
+
         [HttpDelete]
         [Route("deleteFeedback/{ID}")]
-        public void deleteFeedback(int ID) 
+        public void deleteFeedback(int ID)
         {
             feedbackService.deleteFeedback(ID);
         }

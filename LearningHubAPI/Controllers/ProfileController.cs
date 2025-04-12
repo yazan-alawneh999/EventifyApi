@@ -9,9 +9,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace LearningHubAPI.Controllers;
 [ApiController]
 [Route("api/event-manager/")]
-public class ProfileController:ControllerBase
+public class ProfileController : ControllerBase
 {
-    
+
     private readonly IProfileService _profileService;
 
     public ProfileController(IProfileService profileService)
@@ -21,7 +21,7 @@ public class ProfileController:ControllerBase
 
     [HttpPost("create-profile/{userId}")]
     [Authorize]
-    public async Task<IActionResult> CreateProfile(decimal userId,[FromForm] ProfileDto profileDto)
+    public async Task<IActionResult> CreateProfile(decimal userId, [FromForm] ProfileDto profileDto)
     {
         if (!await _profileService.UserExistsAsync(userId))
         {
@@ -32,13 +32,13 @@ public class ProfileController:ControllerBase
 
         return Ok(await _profileService.CreateProfile(userId, profileDto));
     }
-    
+
     [HttpGet("profile-details/{userId}")]
     [Authorize]
     public async Task<IActionResult> GetProfile(int userId)
     {
-        var profile = await _profileService.GetProfileByIdAsync(userId,HttpContext);
-        if (profile == null) return NotFound(); 
+        var profile = await _profileService.GetProfileByIdAsync(userId, HttpContext);
+        if (profile == null) return NotFound();
 
         return Ok(profile);
     }
