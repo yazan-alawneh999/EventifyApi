@@ -102,7 +102,7 @@ namespace LearningHub.Infra.Repository
         {
             await using var connection = _dbContext.DbConnection;
 
-            var users = await connection.QueryAsync<User, RoleDto, User>(
+            var users = await connection.QueryAsync(
                 @"SELECT 
                             u.UserID, u.Username, u.PasswordHash,u.LastLogin as CreateAt,
                             p.ProfileID, p.ProfileImage,  
@@ -110,9 +110,8 @@ namespace LearningHub.Infra.Repository
                             FROM Users u
                             LEFT JOIN Roles r ON u.RoleID = r.RoleID
                             LEFT JOIN Profile p ON u.UserID = p.UserID",
-            
                 
-                (user, role) =>
+                (User user, RoleDto role) =>
                 {
                     user.ProfileImage = _utilService.GetProfileImageUrl(user.ProfileImage);
                     user.Role = role; 
@@ -122,21 +121,10 @@ namespace LearningHub.Infra.Repository
             );
 
             return users.ToList();
-            
-            
-            
            
         }
 
-        public  async Task<bool> DeleteUserAsync(int userId)
-        {
-            await using var connection = _dbContext.DbConnection;
-            const string sql = "DELETE FROM Users WHERE UserID = :UserID";
-            var rowsAffected = await connection.ExecuteAsync(sql, new { UserID = userId });
-            return rowsAffected > 0;
-        }
-
-        public async Task<User?> ValidateUserAsync(string username, string password)
+        public async Task<User> ValidateUserAsync(string username, string password)
         {
             await using var connection = _dbContext.DbConnection;
             
