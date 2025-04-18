@@ -46,6 +46,7 @@ builder.Services.AddScoped<IBuyTicketService, BuyTicketService>();
 builder.Services.AddScoped<QRCodeService>();
 builder.Services.AddScoped<QRCode>();
 
+
 builder.Services.AddScoped<IDiscountsRepository, DiscountsRepository>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
 
