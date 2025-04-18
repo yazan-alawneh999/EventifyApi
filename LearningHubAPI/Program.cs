@@ -106,7 +106,7 @@ builder.Services.AddAuthentication(opt =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtIssuer,
-        ValidAudience = jwtAudience,
+            ValidAudience = jwtAudience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
         RoleClaimType = ClaimTypes.Role
     };
@@ -152,5 +152,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/images"
 });
 app.MapControllers();
+
 
 app.Run();
