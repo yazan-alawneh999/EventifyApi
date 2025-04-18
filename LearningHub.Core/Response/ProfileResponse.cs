@@ -8,12 +8,18 @@ public class ProfileResponse
     public int Age { get; set; }  
     public string Email { get; set; }   
     public string PhoneNumber { get; set; }   
+    public int RoleID  { get; set; }
+    public string RoleName { get; set; }
+    public string ProfileID { get; set; }
+    public DateTime CreatedAt  { get; set; } 
+    public string Username  { get; set; }
+    
 
     private string _profileImage;  
     public string ProfileImage  
     {  
-        get => _profileImage; // Return the stored file name only  
-        set => _profileImage = value; // Store only file name  
+        get => _profileImage; 
+        set => _profileImage = value;   
     }  
 
 }

@@ -9,7 +9,7 @@ namespace LearningHub.Core.Dto;
 
 public class ProfileDto
 {
-         public string USERID { get; set; }
+       
     [Required]
         public string FirstName { get; set; }   
         [Required]
@@ -24,6 +24,12 @@ public class ProfileDto
      
         [Required]
         public string PhoneNumber { get; set; }
+        
+        public int RoleID  { get; set; }
+        
+        public string Username  { get; set; }
+        
+    
 
         
         [JsonIgnore]

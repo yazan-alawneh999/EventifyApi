@@ -75,6 +75,7 @@ namespace LearningHub.Infra.Repository
       /// <summary>
 /// Update an existing profile.
 /// </summary>
+/*
 public async Task<CreateProfileResponse?> UpdateProfile(decimal userId, ProfileDto userDto)
 {
     await using var connection = _dbContext.DbConnection;
@@ -130,6 +131,80 @@ public async Task<CreateProfileResponse?> UpdateProfile(decimal userId, ProfileD
         throw new Exception($"Error updating profile: {ex.Message}", ex);
     }
 }
+*/
+
+
+public async Task<CreateProfileResponse?> UpdateProfile(decimal userId, ProfileDto userDto)
+{
+    await using var connection = _dbContext.DbConnection;
+    await connection.OpenAsync();
+    await using var transaction = await connection.BeginTransactionAsync();
+
+    try
+    {
+        // ✅ 1. Save Image and Get File Path
+        string imagePath = await _utilService.SaveImageAsync(userDto.ImageFile) ?? string.Empty;
+
+        // ✅ 2. Update Profile
+        const string updateProfileSql = @"
+            UPDATE Profile  
+            SET  
+                FirstName = :FirstName,  
+                LastName = :LastName,  
+                City = :City,  
+                Age = :Age,  
+                PhoneNumber = :PhoneNumber,
+                ProfileImage = :ProfileImage,
+                Email = :Email
+            WHERE  
+                UserId = :UserId
+            RETURNING ProfileID INTO :UpdatedID";
+
+        var profileParams = new DynamicParameters();
+        profileParams.Add(":FirstName", userDto.FirstName, DbType.String);
+        profileParams.Add(":LastName", userDto.LastName, DbType.String);
+        profileParams.Add(":City", userDto.City, DbType.String);
+        profileParams.Add(":Age", userDto.Age, DbType.Int32);
+        profileParams.Add(":PhoneNumber", userDto.PhoneNumber, DbType.String);
+        profileParams.Add(":ProfileImage", imagePath, DbType.String);
+        profileParams.Add(":Email", userDto.Email, DbType.String);
+        profileParams.Add(":UserId", userId, DbType.Decimal);
+        profileParams.Add(":UpdatedID", dbType: DbType.Decimal, direction: ParameterDirection.Output);
+
+        await connection.ExecuteAsync(updateProfileSql, profileParams, transaction);
+        var updatedProfileId = profileParams.Get<decimal>(":UpdatedID");
+
+        // ✅ 3. Update Username and RoleID (mandatory)
+        const string updateUserSql = @"
+            UPDATE Users
+            SET Username = :Username,
+                RoleID = :RoleID
+            WHERE UserID = :UserId";
+
+        var userParams = new DynamicParameters();
+        userParams.Add(":Username", userDto.Username, DbType.String);
+        userParams.Add(":RoleID", userDto.RoleID, DbType.Int32);
+        userParams.Add(":UserId", userId, DbType.Decimal);
+
+        await connection.ExecuteAsync(updateUserSql, userParams, transaction);
+
+        // ✅ 4. Commit Transaction
+        if (updatedProfileId > 0)
+        {
+            await transaction.CommitAsync();
+            return new CreateProfileResponse { profileId = updatedProfileId };
+        }
+
+        await transaction.RollbackAsync();
+        return null;
+    }
+    catch (Exception ex)
+    {
+        await transaction.RollbackAsync();
+        throw new Exception($"Error updating profile and user: {ex.Message}", ex);
+    }
+}
+
 
         /// <summary>
         /// Check if a user exists in the database.
@@ -149,9 +224,29 @@ public async Task<CreateProfileResponse?> UpdateProfile(decimal userId, ProfileD
             await using var connection = _dbContext.DbConnection;
     
             string sql = @"
-    SELECT ProfileID, FirstName, LastName, City, Age, Email, PhoneNumber, ProfileImage
-    FROM Profile
-    WHERE UserId = :userId";
+    SELECT
+        u.UserID,
+        u.Username,
+        u.LastLogin,
+        r.RoleID,
+        r.RoleName,
+        p.ProfileID,
+        p.FirstName,
+        p.LastName,
+        p.City,
+        p.Age,
+        p.Email,
+        p.ProfileImage,
+        p.PhoneNumber,
+        p.CreatedAt
+    FROM
+        Users u
+    INNER JOIN
+        Roles r ON u.RoleID = r.RoleID
+    INNER JOIN
+        Profile p ON u.UserID = p.UserID
+";
+
 
             var profile = await connection.QueryFirstOrDefaultAsync<ProfileResponse>(sql, new { UserID = userId });
 

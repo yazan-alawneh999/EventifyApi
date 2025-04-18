@@ -46,6 +46,13 @@ builder.Services.AddScoped<IBuyTicketService, BuyTicketService>();
 builder.Services.AddScoped<QRCodeService>();
 builder.Services.AddScoped<QRCode>();
 
+builder.Services.AddScoped<IReportsRepository, ReportsRepository>();
+builder.Services.AddScoped<IReportsService, ReportsService>();
+builder.Services.AddScoped<IBuyTicketRepository, BuyTicketRepository>();
+builder.Services.AddScoped<IBuyTicketService, BuyTicketService>();
+builder.Services.AddScoped<QRCodeService>();
+builder.Services.AddScoped<QRCode>();
+
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
     {
@@ -99,7 +106,7 @@ builder.Services.AddAuthentication(opt =>
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtIssuer,
-        ValidAudience = jwtAudience,
+            ValidAudience = jwtAudience,
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
         RoleClaimType = ClaimTypes.Role
     };
@@ -145,5 +152,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/images"
 });
 app.MapControllers();
+
 
 app.Run();
