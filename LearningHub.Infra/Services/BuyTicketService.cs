@@ -25,5 +25,11 @@ namespace LearningHub.Infra.Services
             string code = _qrCodeService.GenerateQRCodeText(TicketInfo.t_EventID, TicketInfo.t_UserID);
             return _buyTicketRepository.BuyTicket(TicketInfo,code );
         }
+
+        public List<TicketPreviewDto> GetAllTicketsByUserId(decimal userID)
+        {
+            return _buyTicketRepository.GetAllTicketsByUserId(userID);
+        }
     }
+
 }

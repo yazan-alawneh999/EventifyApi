@@ -10,5 +10,6 @@ namespace LearningHub.Core.Services
     public interface IBuyTicketService
     {
         public bool BuyTicket(BuyTicket TicketInfo);
+        public List<TicketPreviewDto> GetAllTicketsByUserId(decimal userID);
     }
 }

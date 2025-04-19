@@ -40,6 +40,13 @@ namespace LearningHub.Infra.Repository
             }
 
         }
+
+        public List<TicketPreviewDto> GetAllTicketsByUserId(decimal userID) {
+            var p = new DynamicParameters();
+            p.Add("t_UserID", userID, dbType: DbType.Int32);
+            var result= _dbContext.DbConnection.Query<TicketPreviewDto>("Tickets_Package.GetAllTicketsByUserId", p, commandType: CommandType.StoredProcedure).ToList();
+            return result;
+        }
     }
 
 }

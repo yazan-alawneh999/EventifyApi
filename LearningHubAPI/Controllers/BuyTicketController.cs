@@ -59,5 +59,20 @@ namespace LearningHubAPI.Controllers
             }
              return Ok(new {message =  "success" }); 
         }
+
+
+
+        [HttpGet]
+        [Route("GetAllTicketsByUserID/{ID}")]
+        [Authorize]
+        public async Task<IActionResult> GetAllTicketsByUserID(decimal ID)
+        {
+            if (ID != 0 && ID > 0) 
+            {
+                var result = _buyTicketService.GetAllTicketsByUserId(ID);
+                return Ok(result);
+            }
+            else { return BadRequest("User ID not Valid"); }
+        }
     }
 }

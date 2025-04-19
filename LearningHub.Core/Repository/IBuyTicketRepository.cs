@@ -9,6 +9,8 @@ namespace LearningHub.Core.Repository
 {
     public interface IBuyTicketRepository
     {
-        public bool BuyTicket(BuyTicket TicketInfo, String qrText); 
+        public bool BuyTicket(BuyTicket TicketInfo, String qrText);
+
+        public List<TicketPreviewDto> GetAllTicketsByUserId(decimal userID);
     }
 }
