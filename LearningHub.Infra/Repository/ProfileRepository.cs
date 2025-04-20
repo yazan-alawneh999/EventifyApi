@@ -224,27 +224,29 @@ public async Task<CreateProfileResponse?> UpdateProfile(decimal userId, ProfileD
             await using var connection = _dbContext.DbConnection;
     
             string sql = @"
-    SELECT
-        u.UserID,
-        u.Username,
-        u.LastLogin,
-        r.RoleID,
-        r.RoleName,
-        p.ProfileID,
-        p.FirstName,
-        p.LastName,
-        p.City,
-        p.Age,
-        p.Email,
-        p.ProfileImage,
-        p.PhoneNumber,
-        p.CreatedAt
-    FROM
-        Users u
-    INNER JOIN
-        Roles r ON u.RoleID = r.RoleID
-    INNER JOIN
-        Profile p ON u.UserID = p.UserID
+SELECT
+    u.UserID,
+    u.Username,
+    u.LastLogin,
+    r.RoleID,
+    r.RoleName,
+    p.ProfileID,
+    p.FirstName,
+    p.LastName,
+    p.City,
+    p.Age,
+    p.Email,
+    p.ProfileImage,
+    p.PhoneNumber,
+    p.CreatedAt
+FROM
+    Users u
+INNER JOIN
+    Roles r ON u.RoleID = r.RoleID
+INNER JOIN
+    Profile p ON u.UserID = p.UserID
+WHERE
+    u.UserID = :UserID
 ";
 
 
