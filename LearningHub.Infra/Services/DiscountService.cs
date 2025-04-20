@@ -31,5 +31,9 @@ namespace LearningHub.Infra.Services
         public List<DiscountDto> GetAllDiscounts() { 
             return _countsRepository.GetAllDiscounts();
         }
+
+        public void AddDiscount(DiscountDto discount) { 
+             _countsRepository.AddDiscount(discount);
+        }
     }
 }

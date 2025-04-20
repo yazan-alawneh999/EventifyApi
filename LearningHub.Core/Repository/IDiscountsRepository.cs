@@ -12,5 +12,6 @@ namespace LearningHub.Core.Repository
         public List<DiscountDto> GetDiscountsByUserID(decimal userID);
         public DiscountDto GetDiscountsByUserAndCode(decimal userID, String Code);
         public List<DiscountDto> GetAllDiscounts();
+        public void AddDiscount (DiscountDto discount);
     }
 }

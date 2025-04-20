@@ -59,10 +59,24 @@ namespace LearningHubAPI.Controllers
 
         [HttpGet]
         [Authorize]
+        [Route("GetAllDiscounts")]
         [IdentityRequiresClaims(ClaimTypes.Role, new[] { "3", "2" })]
         public IActionResult GetAllDiscounts() { 
             var result = _discountService.GetAllDiscounts();    
             return Ok(result);
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        [Route("AddDiscount")]
+        public IActionResult AddDiscount(DiscountDto discount) {
+            if (discount != null){
+                _discountService.AddDiscount(discount);
+                return Ok();
+            }
+            else 
+                return BadRequest("discount not created");
         }
     }
 }

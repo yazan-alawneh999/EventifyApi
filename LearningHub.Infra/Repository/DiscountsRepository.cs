@@ -2,6 +2,7 @@
 using LearningHub.Core.Common;
 using LearningHub.Core.Dto;
 using LearningHub.Core.Repository;
+using LearningHub.Core.Response;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -41,6 +42,18 @@ namespace LearningHub.Infra.Repository
         
             var result = _dbContext.DbConnection.Query<DiscountDto>("Discount_Package.GetAllDiscounts",  commandType: CommandType.StoredProcedure).ToList();
             return result;
+        }
+
+
+        public void AddDiscount(DiscountDto discount) 
+        {
+            var p = new DynamicParameters();
+            p.Add("p_UserID", discount.USERID, dbType: DbType.Int32);
+            p.Add("p_DiscountCode", discount.DISCOUNTCODE, dbType: DbType.String);
+            p.Add("D_Amount", discount.DISCOUNTAMOUNT, dbType: DbType.Int32);
+            var result = _dbContext.DbConnection.Execute("Discount_Package.AddDiscount", p, commandType: CommandType.StoredProcedure);
+            
+
         }
     }
 }
