@@ -55,5 +55,14 @@ namespace LearningHubAPI.Controllers
             }
                     
         }
+
+
+        [HttpGet]
+        [Authorize]
+        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "3", "2" })]
+        public IActionResult GetAllDiscounts() { 
+            var result = _discountService.GetAllDiscounts();    
+            return Ok(result);
+        }
     }
 }

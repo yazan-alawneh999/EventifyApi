@@ -35,5 +35,12 @@ namespace LearningHub.Infra.Repository
             var result = _dbContext.DbConnection.Query<DiscountDto>("Discount_Package.GetDiscountsByUserAndCode", p, commandType: CommandType.StoredProcedure).SingleOrDefault();
             return result;
         }
+
+
+        public List<DiscountDto> GetAllDiscounts() { 
+        
+            var result = _dbContext.DbConnection.Query<DiscountDto>("Discount_Package.GetAllDiscounts",  commandType: CommandType.StoredProcedure).ToList();
+            return result;
+        }
     }
 }
