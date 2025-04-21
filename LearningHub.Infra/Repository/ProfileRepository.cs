@@ -242,7 +242,7 @@ public async Task<CreateProfileResponse?> UpdateProfile(decimal userId, ProfileD
     FROM
         Users u
     INNER JOIN
-        Roles r ON u.RoleID = r.RoleID
+        Roles1 r ON u.RoleID = r.RoleID
     left JOIN
         Profile p ON u.UserID = p.UserID
 ";
