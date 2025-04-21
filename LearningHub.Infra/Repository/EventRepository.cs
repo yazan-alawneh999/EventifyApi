@@ -18,10 +18,11 @@ namespace LearningHub.Infra.Repository
             _dbContext = dbContext;
             _configuration = configuration;
         }
-        public void CreateEvent(Event Event)
+        /*public  async Task<bool >CreateEvent(CreateEventDto Event)
         {
             var p = new DynamicParameters();
-          
+
+            // Event parameters
             p.Add("Organizer_id", Event.OrganizerID, dbType: DbType.Int32, direction: ParameterDirection.Input);
             p.Add("event_Name", Event.EventName, dbType: DbType.String, direction: ParameterDirection.Input);
             p.Add("Event_Type", Event.EventType, dbType: DbType.String, direction: ParameterDirection.Input);
@@ -31,11 +32,70 @@ namespace LearningHub.Infra.Repository
             p.Add("E_description", Event.Description, dbType: DbType.String, direction: ParameterDirection.Input);
             p.Add("E_capacity", Event.Capacity, dbType: DbType.Int32, direction: ParameterDirection.Input);
             p.Add("E_price", Event.Price, dbType: DbType.Decimal, direction: ParameterDirection.Input);
-            
-            var result = _dbContext.DbConnection.Execute(
-                "event_package.createEvent", p, commandType: CommandType.StoredProcedure);
+            p.Add("E_createAt", Event.CreatedAt, dbType: DbType.DateTime, direction: ParameterDirection.Input); // ✅ جديد
 
+            // Location parameters
+            p.Add("L_latitude", Event.Latitude, dbType: DbType.Double, direction: ParameterDirection.Input);
+            p.Add("L_longitude", Event.Longitude, dbType: DbType.Double, direction: ParameterDirection.Input);
+            p.Add("L_address", Event.Address, dbType: DbType.String, direction: ParameterDirection.Input);
+
+            await using var connection = _dbContext.DbConnection;
+            await connection.OpenAsync();
+            await using var transaction = await connection.BeginTransactionAsync();
+         var result = await _dbContext.DbConnection.ExecuteAsync(
+                "EVENT_PACKAGE.CreateEvent",
+                p,
+                commandType: CommandType.StoredProcedure
+            ); 
+         
+         return result > 0;
+        }*/
+        
+        public async Task CreateEvent(CreateEventDto Event)
+        {
+            var p = new DynamicParameters();
+
+            // Event parameters
+            p.Add("Organizer_id", Event.OrganizerID, DbType.Int32);
+            p.Add("event_Name", Event.EventName, DbType.String);
+            p.Add("Event_Type", Event.EventType, DbType.String);
+            p.Add("Event_Time", Event.EventTime, DbType.DateTime);
+            p.Add("event_Date", Event.EventDate, DbType.DateTime);
+            p.Add("event_Status", Event.EventStatus, DbType.String);
+            p.Add("E_description", Event.Description, DbType.String);
+            p.Add("E_capacity", Event.Capacity, DbType.Int32);
+            p.Add("E_price", Event.Price, DbType.Decimal);
+            p.Add("E_createAt", Event.CreatedAt, DbType.DateTime);
+
+            // Location parameters
+            p.Add("L_latitude", Event.Latitude, DbType.Double);
+            p.Add("L_longitude", Event.Longitude, DbType.Double);
+            p.Add("L_address", Event.Address, DbType.String);
+
+            await using var connection = _dbContext.DbConnection;
+            await connection.OpenAsync();
+            await using var transaction = await connection.BeginTransactionAsync();
+
+            try
+            {
+                 await connection.ExecuteAsync(
+                    "EVENT_PACKAGE.CreateEvent",
+                    p,
+                    commandType: CommandType.StoredProcedure,
+                    transaction: transaction
+                );
+
+                await transaction.CommitAsync();
+                
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
+
+
 
         public void deleteEvent(int ID)
         {

@@ -15,9 +15,9 @@ namespace LearningHub.Infra.Services
             _eventRepository = eventRepository;
         }
 
-        public void CreateEvent(Event Event)
+        public async Task CreateEvent(CreateEventDto Event)
         {
-            _eventRepository.CreateEvent(Event);
+             await _eventRepository.CreateEvent(Event);
         }
 
         public void deleteEvent(int ID)

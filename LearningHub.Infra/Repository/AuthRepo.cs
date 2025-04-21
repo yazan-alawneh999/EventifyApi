@@ -166,6 +166,14 @@ namespace LearningHub.Infra.Repository
             }
         }
 
+        public async Task<bool> DeleteUserAsync(int userId)
+        {
+            var sql = "DELETE FROM Users WHERE UserID = :UserId";
+
+            await using var connection = _dbContext.DbConnection;
+            var rowsAffected = await connection.ExecuteAsync(sql, new { UserId = userId });
+            return rowsAffected > 0;
+        }
 
 
         private string? GenerateJwtToken(string username, decimal roleId)
@@ -194,5 +202,7 @@ namespace LearningHub.Infra.Repository
             // Return token as a string
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+        
     }
+   
 }

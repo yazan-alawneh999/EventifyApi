@@ -4,7 +4,7 @@ using LearningHub.Core.Response;
 using LearningHub.Core.Services;
 using LearningHubAPI.Identity;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearningHubAPI.Controllers
@@ -25,7 +25,7 @@ namespace LearningHubAPI.Controllers
         [HttpGet]
         [Route("GetAllEvent")]
         [Authorize]
-        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })]
+ 
         public List<Event> GetAllEvent()
         {
             return eventService.GetAllEvent();
@@ -34,6 +34,7 @@ namespace LearningHubAPI.Controllers
 
         [HttpGet]
         [Route("getEventByID/{ID}")]
+        [Authorize]
         public Event getEventByID(int ID)
         {
             return eventService.getEventByID(ID);
@@ -41,14 +42,28 @@ namespace LearningHubAPI.Controllers
 
         [HttpPost]
         [Route("CreateEvent")]
-        public void CreateEvent(Event Event)
+        [Authorize]
+        public async Task<IActionResult> CreateEvent(CreateEventDto Event)
         {
-            eventService.CreateEvent(Event);
+            try
+            {
+                await eventService.CreateEvent(Event);
+                return Ok("event created");
+            }
+            catch (Exception e)
+            {
+               return StatusCode(500, e.Message);
+            }
+            
+           
+                
+            
         }
 
 
         [HttpPut]
         [Route("UpdateEvent")]
+        [Authorize]
         public void UpdateEvent(Event Event)
         {
             eventService.UpdateEvent(Event);
@@ -56,6 +71,7 @@ namespace LearningHubAPI.Controllers
 
         [HttpDelete]
         [Route("deleteEvent")]
+        [Authorize]
         public void deleteEvent(int ID)
         {
             eventService.deleteEvent(ID);
@@ -64,6 +80,7 @@ namespace LearningHubAPI.Controllers
 
         [HttpGet]
         [Route("GetAllFeedbackInEachEvent")]
+        [Authorize]
         public async Task<IActionResult> GetAllFeedbackInEachEvent()
         {
             try

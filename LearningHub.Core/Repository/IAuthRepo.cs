@@ -16,7 +16,8 @@ public interface IAuthRepo
     
     Task<List<User>> GetAllUsersAsync();
     Task<User> ValidateUserAsync(string username, string password);
-    
+    Task<bool> DeleteUserAsync(int userId);
 
-  
+
+
 }
