@@ -70,13 +70,14 @@ namespace LearningHub.Infra.Repository
         public async Task<List<PinLocationEachEvent>> getAllPinLocationEachEvent()
         {
             var query = @"
-        SELECT 
-            e.EVENTID, e.ORGANIZERID, e.EVENTNAME, e.EVENTTYPE, 
-            e.EVENTTIME, e.EVENTDATE, e.EVENTSTATUS, e.DESCRIPTION, 
-            e.CAPACITY, e.PRICE, e.CREATEDAT, 
-            l.LOCATIONID, l.LATITUDE, l.LONGITUDE, l.ADDRESS
-        FROM EVENTS e
-        INNER JOIN LOCATIONS l ON e.EVENTID = l.EVENTID
+    SELECT 
+        e.EVENTID, e.ORGANIZERID, u.USERNAME AS ORGANIZERNAME, e.EVENTNAME, e.EVENTTYPE, 
+        e.EVENTTIME, e.EVENTDATE, e.EVENTSTATUS, e.DESCRIPTION, 
+        e.CAPACITY, e.PRICE, e.CREATEDAT, 
+        l.LOCATIONID, l.LATITUDE, l.LONGITUDE, l.ADDRESS
+    FROM EVENTS e
+    INNER JOIN LOCATIONS l ON e.EVENTID = l.EVENTID
+    INNER JOIN USERS u ON e.ORGANIZERID = u.USERID
     ";
 
             using var connection = _dbContext.DbConnection;
@@ -85,16 +86,16 @@ namespace LearningHub.Infra.Repository
                 query,
                 (eventModel, location) =>
                 {
-                    eventModel.Location = location; 
+                    eventModel.Location = location;
                     return eventModel;
                 },
-                splitOn: "LOCATIONID" 
+                splitOn: "LOCATIONID"
             );
 
             return result.ToList();
         }
 
-    
+
 
         public async Task<Location> getLocationByID(int ID)
         {

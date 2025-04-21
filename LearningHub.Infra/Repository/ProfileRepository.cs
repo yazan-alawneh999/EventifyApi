@@ -220,33 +220,38 @@ public async Task<CreateProfileResponse?> UpdateProfile(decimal userId, ProfileD
         }
 
         public async Task<ProfileResponse?> GetProfileByIdAsync(decimal userId, HttpContext httpContext)
-        {
-            await using var connection = _dbContext.DbConnection;
-    
-            string sql = @"
-    SELECT
-        u.UserID,
-        u.Username,
-        u.LastLogin,
-        r.RoleID,
-        r.RoleName,
-        p.ProfileID,
-        p.FirstName,
-        p.LastName,
-        p.City,
-        p.Age,
-        p.Email,
-        p.ProfileImage,
-        p.PhoneNumber,
-        p.CreatedAt
-    FROM
-        Users u
-    INNER JOIN
-        Roles1 r ON u.RoleID = r.RoleID
-    left JOIN
-        Profile p ON u.UserID = p.UserID
-";
+        {   
+            if (!(await UserExistsAsync(userId)))
+            {
+                return null;
 
+            }
+            await using var connection = _dbContext.DbConnection;
+            string sql = @"
+                        SELECT
+                            u.UserID,
+                            u.Username,
+                            u.LastLogin,
+                            r.RoleID,
+                            r.RoleName,
+                            p.ProfileID,
+                            p.FirstName,
+                            p.LastName,
+                            p.City,
+                            p.Age,
+                            p.Email,
+                            p.ProfileImage,
+                            p.PhoneNumber,
+                            p.CreatedAt
+                        FROM
+                            Users u
+                        INNER JOIN 
+                            Roles r ON u.RoleID = r.RoleID
+                        Left JOIN
+                            Profile p ON u.UserID = p.UserID
+                        where
+                           
+                            u.UserID = :UserID";
 
             var profile = await connection.QueryFirstOrDefaultAsync<ProfileResponse>(sql, new { UserID = userId });
 

@@ -7,6 +7,7 @@ using LearningHub.Core.Services;
 using LearningHub.Infra.Repository;
 using LearningHub.Infra.Services;
 using LearningHub.Infra.Util;
+
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -49,6 +50,7 @@ builder.Services.AddScoped<QRCode>();
 
 builder.Services.AddScoped<IDiscountsRepository, DiscountsRepository>();
 builder.Services.AddScoped<IDiscountService, DiscountService>();
+
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
