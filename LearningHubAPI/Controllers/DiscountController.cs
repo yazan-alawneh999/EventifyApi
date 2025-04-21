@@ -21,8 +21,8 @@ namespace LearningHubAPI.Controllers
 
         [HttpGet]
         [Route("GetDiscountsByUserID/{userID}")]
-        [Authorize]
-        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "3", "2" })]
+        //[Authorize]
+        //[IdentityRequiresClaims(ClaimTypes.Role, new[] { "3", "2" })]
         public IActionResult GetDiscountsByUserID(decimal userID) 
         {
             if (userID != 0)
@@ -39,8 +39,8 @@ namespace LearningHubAPI.Controllers
 
         [HttpGet]
         [Route("GetDiscountsByUserAndCode/{userID}/{Code}")]
-        [Authorize]
-        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "3", "2" })]
+        //[Authorize]
+        //[IdentityRequiresClaims(ClaimTypes.Role, new[] { "3", "2" })]
         public IActionResult GetDiscountsByUserAndCode( decimal userID, String Code) 
         {
             if ( userID != 0 && Code != null) 
@@ -58,9 +58,9 @@ namespace LearningHubAPI.Controllers
 
 
         [HttpGet]
-        [Authorize]
         [Route("GetAllDiscounts")]
-        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "3", "2" })]
+        //[Authorize]
+        //[IdentityRequiresClaims(ClaimTypes.Role, new[] { "3", "2" })]
         public IActionResult GetAllDiscounts() { 
             var result = _discountService.GetAllDiscounts();    
             return Ok(result);
@@ -68,8 +68,8 @@ namespace LearningHubAPI.Controllers
 
 
         [HttpPost]
-        [Authorize]
-        [Route("AddDiscount")]
+        //[Authorize]
+        //[Route("AddDiscount")]
         public IActionResult AddDiscount(DiscountDto discount) {
             if (discount != null){
                 _discountService.AddDiscount(discount);

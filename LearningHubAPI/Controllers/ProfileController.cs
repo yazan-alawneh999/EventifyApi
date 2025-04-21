@@ -34,7 +34,7 @@ public class ProfileController : ControllerBase
     }
 
     [HttpGet("profile-details/{userId}")]
-    [Authorize]
+    //[Authorize]
     public async Task<IActionResult> GetProfile(int userId)
     {
         var profile = await _profileService.GetProfileByIdAsync(userId, HttpContext);
