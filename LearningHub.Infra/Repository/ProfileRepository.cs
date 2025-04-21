@@ -220,14 +220,13 @@ public async Task<CreateProfileResponse?> UpdateProfile(decimal userId, ProfileD
         }
 
         public async Task<ProfileResponse?> GetProfileByIdAsync(decimal userId, HttpContext httpContext)
-        {
+        {   
             if (!(await UserExistsAsync(userId)))
             {
                 return null;
 
             }
             await using var connection = _dbContext.DbConnection;
-    
             string sql = @"
                         SELECT
                             u.UserID,
@@ -253,7 +252,6 @@ public async Task<CreateProfileResponse?> UpdateProfile(decimal userId, ProfileD
                         where
                            
                             u.UserID = :UserID";
-
 
             var profile = await connection.QueryFirstOrDefaultAsync<ProfileResponse>(sql, new { UserID = userId });
 

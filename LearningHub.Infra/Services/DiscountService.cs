@@ -27,5 +27,13 @@ namespace LearningHub.Infra.Services
         { 
             return _countsRepository.GetDiscountsByUserAndCode(userID, Code);
         }
+
+        public List<DiscountDto> GetAllDiscounts() { 
+            return _countsRepository.GetAllDiscounts();
+        }
+
+        public void AddDiscount(DiscountDto discount) { 
+             _countsRepository.AddDiscount(discount);
+        }
     }
 }
