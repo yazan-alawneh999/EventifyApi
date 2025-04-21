@@ -2,6 +2,7 @@
 using LearningHub.Core.Common;
 using LearningHub.Core.Dto;
 using LearningHub.Core.Repository;
+using LearningHub.Core.Response;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,17 +12,17 @@ using System.Threading.Tasks;
 
 namespace LearningHub.Infra.Repository
 {
-    public class BuyTicketRepository:IBuyTicketRepository
+    public class BuyTicketRepository : IBuyTicketRepository
     {
         private readonly IDbContext _dbContext;
-        
+
 
         public BuyTicketRepository(IDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public bool BuyTicket(BuyTicket TicketInfo,String qrText)
+        public bool BuyTicket(BuyTicket TicketInfo, String qrText)
         {
             var p = new DynamicParameters();
             p.Add("t_EventID", TicketInfo.t_EventID, dbType: DbType.Int32);
@@ -35,7 +36,7 @@ namespace LearningHub.Infra.Repository
                 _dbContext.DbConnection.Execute("Tickets_Package.BuyTicket", p, commandType: CommandType.StoredProcedure);
                 return true;
             }
-            catch { 
+            catch {
                 return false;
             }
 
@@ -44,7 +45,15 @@ namespace LearningHub.Infra.Repository
         public List<TicketPreviewDto> GetAllTicketsByUserId(decimal userID) {
             var p = new DynamicParameters();
             p.Add("t_UserID", userID, dbType: DbType.Int32);
-            var result= _dbContext.DbConnection.Query<TicketPreviewDto>("Tickets_Package.GetAllTicketsByUserId", p, commandType: CommandType.StoredProcedure).ToList();
+            var result = _dbContext.DbConnection.Query<TicketPreviewDto>("Tickets_Package.GetAllTicketsByUserId", p, commandType: CommandType.StoredProcedure).ToList();
+            return result;
+        }
+
+
+        public TicketQR GetTicketsByTicketId(decimal ticketID){
+            var p = new DynamicParameters();
+            p.Add("t_Id", ticketID, dbType: DbType.Int32);
+            var result = _dbContext.DbConnection.Query<TicketQR>("Tickets_Package.GetTicketByTicketID", p, commandType: CommandType.StoredProcedure).SingleOrDefault();
             return result;
         }
     }

@@ -30,6 +30,10 @@ namespace LearningHub.Infra.Services
         {
             return _buyTicketRepository.GetAllTicketsByUserId(userID);
         }
+
+        public TicketQR GetTicketsByTicketId(decimal ticketID) {
+            return _buyTicketRepository.GetTicketsByTicketId(ticketID);  
+        }
     }
 
 }

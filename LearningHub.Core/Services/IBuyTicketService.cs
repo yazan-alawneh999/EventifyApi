@@ -11,5 +11,6 @@ namespace LearningHub.Core.Services
     {
         public bool BuyTicket(BuyTicket TicketInfo);
         public List<TicketPreviewDto> GetAllTicketsByUserId(decimal userID);
+        public TicketQR GetTicketsByTicketId(decimal ticketID);
     }
 }

@@ -12,5 +12,7 @@ namespace LearningHub.Core.Repository
         public bool BuyTicket(BuyTicket TicketInfo, String qrText);
 
         public List<TicketPreviewDto> GetAllTicketsByUserId(decimal userID);
+
+        public TicketQR GetTicketsByTicketId(decimal ticketID);
     }
 }

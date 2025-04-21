@@ -74,5 +74,21 @@ namespace LearningHubAPI.Controllers
             }
             else { return BadRequest("User ID not Valid"); }
         }
+
+
+        [HttpGet]
+        [Route("GetAllTicketsByTicketId/{ticketID}")]
+        public IActionResult GetTicketsByTicketId(decimal ticketID)
+        {
+
+            if (ticketID > 0)
+            {
+                var result =_buyTicketService.GetTicketsByTicketId(ticketID);
+                return Ok(result);
+            }
+            else {
+                return BadRequest("Ticket id not valid");
+            }
+        }
     }
 }
