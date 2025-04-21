@@ -15,6 +15,7 @@ namespace LearningHub.Core.Dto
         // Event properties
         public int EventID { get; set; }
         public int OrganizerID { get; set; }
+        public string OrganizerName { get; set; }
         public string EventName { get; set; } = string.Empty;
         public string? EventType { get; set; }
         public DateTime EventTime { get; set; }
