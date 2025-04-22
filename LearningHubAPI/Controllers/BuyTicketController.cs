@@ -74,5 +74,19 @@ namespace LearningHubAPI.Controllers
             }
             else { return BadRequest("User ID not Valid"); }
         }
+        
+        
+        
+        [HttpPost("by-qrcode")]
+        public async Task<IActionResult> CheckInByQRCode([FromBody] string qrCode)
+        {
+            var result = await _buyTicketService.CheckInByQRCodeAsync(qrCode);
+            if (result == "Ticket not found")
+                return NotFound(result);
+            if (result == "Ticket already checked in")
+                return BadRequest(result);
+
+            return Ok(result);
+        }
     }
 }

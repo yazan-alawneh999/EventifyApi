@@ -64,7 +64,21 @@ public class AuthController:ControllerBase
     }
 
 
+    [HttpDelete("delete/{userId}")]
+    [Authorize] 
+    [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })]
+    public async Task<IActionResult> DeleteUser(int userId)
+    {
   
+        var userExists = await _authRepo.UserExistsAsync(userId); 
+        if (!userExists)
+        {
+            return NotFound(new { Message = $"User with ID {userId} not found." });
+        }
+
+        var deleted = await _authRepo.DeleteUserAsync(userId);
+        return !deleted ? StatusCode(500, new { Message = "Failed to delete user due to a server error." }) : Ok(new { Message = "User deleted successfully." });
+    }
 
     
     

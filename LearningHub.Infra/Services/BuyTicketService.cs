@@ -30,6 +30,10 @@ namespace LearningHub.Infra.Services
         {
             return _buyTicketRepository.GetAllTicketsByUserId(userID);
         }
-    }
+
+        public async Task<string> CheckInByQRCodeAsync(string qrCode)
+        {return await  _buyTicketRepository.CheckInByQRCodeAsync(qrCode);}
+        }
+    
 
 }

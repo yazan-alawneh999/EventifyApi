@@ -8,6 +8,7 @@ namespace LearningHub.Core.Dto
 {
     public class BuyTicket
     {
+        public int TicketID { get; set; }
         public decimal t_EventID {  get; set; }
         public decimal t_UserID { get;  set; }
         public string t_TicketType { get; set; }

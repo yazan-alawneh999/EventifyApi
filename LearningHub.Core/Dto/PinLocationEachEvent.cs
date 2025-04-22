@@ -13,7 +13,7 @@ namespace LearningHub.Core.Dto
        
 
         // Event properties
-        public int EventID { get; set; }
+     
         public int OrganizerID { get; set; }
         public string OrganizerName { get; set; }
         public string EventName { get; set; } = string.Empty;
@@ -24,7 +24,7 @@ namespace LearningHub.Core.Dto
         public string? Description { get; set; }
         public int? Capacity { get; set; }
         public decimal? Price { get; set; }
-        public DateTime CreatedAt { get; set; }
+    
 
 
         // Navigation property for EF Core (if needed)

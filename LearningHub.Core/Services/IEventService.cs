@@ -14,7 +14,7 @@ namespace LearningHub.Core.Services
         public List<Event> GetAllEvent();
         public Event getEventByID(int ID);
 
-        public void CreateEvent(Event Event);
+        public Task CreateEvent(CreateEventDto Event);
 
         public void UpdateEvent(Event Event);
 
