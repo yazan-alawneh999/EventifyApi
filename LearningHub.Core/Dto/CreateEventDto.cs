@@ -11,7 +11,7 @@ public class CreateEventDto
     public string? Description { get; set; }
     public int? Capacity { get; set; }
     public decimal? Price { get; set; }
-    public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
     // Location properties (embedded)
     public double Latitude { get; set; }
