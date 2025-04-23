@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using LearningHub.Infra.Exceptions;
 
 namespace LearningHubAPI.Controllers
 {
@@ -29,7 +30,7 @@ namespace LearningHubAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "3" })]
+       
         public async Task<IActionResult> BuyTicket([FromBody] BuyTicket TicketInfo)
         {
             int eventID = (int)TicketInfo.t_EventID;
@@ -80,13 +81,23 @@ namespace LearningHubAPI.Controllers
         [HttpPost("by-qrcode")]
         public async Task<IActionResult> CheckInByQRCode([FromBody] string qrCode)
         {
-            var result = await _buyTicketService.CheckInByQRCodeAsync(qrCode);
-            if (result == "Ticket not found")
-                return NotFound(result);
-            if (result == "Ticket already checked in")
-                return BadRequest(result);
-
-            return Ok(result);
+            try
+            {
+                await _buyTicketService.CheckInByQRCodeAsync(qrCode);
+                return Ok("Check-in successful");
+            }
+            catch (TicketNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (TicketAlreadyCheckedInException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected error occurred: " + ex.Message);
+            }
         }
     }
 }

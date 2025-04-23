@@ -8,6 +8,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LearningHub.Infra.Exceptions;
 
 namespace LearningHub.Infra.Repository
 {
@@ -24,18 +25,23 @@ namespace LearningHub.Infra.Repository
         public bool BuyTicket(BuyTicket TicketInfo,String qrText)
         {
             var p = new DynamicParameters();
-            p.Add("t_EventID", TicketInfo.t_EventID, dbType: DbType.Int32);
-            p.Add("t_UserID", TicketInfo.t_UserID, dbType: DbType.Int32);
-            p.Add("t_TicketType", TicketInfo.t_TicketType, dbType: DbType.String);
-            p.Add("t_Price", TicketInfo.t_Price, dbType: DbType.Decimal);
-            p.Add("t_QRCode", qrText, dbType: DbType.String);
-            p.Add("t_Discount", TicketInfo.t_Discount, dbType: DbType.String);
+            p.Add("t_EventID", TicketInfo.t_EventID, DbType.Decimal); // Changed to Decimal to match Oracle
+            p.Add("t_UserID", TicketInfo.t_UserID, DbType.Decimal);
+            p.Add("t_TicketType", TicketInfo.t_TicketType, DbType.String);
+            p.Add("t_Price", TicketInfo.t_Price, DbType.Decimal);
+            p.Add("t_QRCode", qrText, DbType.String);
+            p.Add("t_Discount", string.IsNullOrEmpty(TicketInfo.t_Discount) ? null : TicketInfo.t_Discount, DbType.String);
 
-            try {
+            try
+            {
                 _dbContext.DbConnection.Execute("Tickets_Package.BuyTicket", p, commandType: CommandType.StoredProcedure);
+
                 return true;
             }
-            catch { 
+            catch (Exception ex)
+            {
+                // Log or inspect ex.Message
+                Console.WriteLine($"Error: {ex.Message}");
                 return false;
             }
 
@@ -50,23 +56,23 @@ namespace LearningHub.Infra.Repository
 
         public async Task<string> CheckInByQRCodeAsync(string qrCode)
         {
+       
             var ticket = await GetTicketByQRCodeAsync(qrCode);
             if (ticket == null)
-                return "Ticket not found";
+                throw new TicketNotFoundException();
 
-            // Optionally check if already checked in
             var alreadyCheckedIn = await IsTicketAlreadyCheckedIn(ticket.TicketID);
             if (alreadyCheckedIn)
-                return "Ticket already checked in";
+                throw new TicketAlreadyCheckedInException();
 
             await CreateCheckInAsync(ticket.TicketID);
             return "Check-in successful";
         }
-        public async Task<BuyTicket?> GetTicketByQRCodeAsync(string qrCode)
+        public async Task<TicketModel?> GetTicketByQRCodeAsync(string qrCode)
         {
             var sql = "SELECT * FROM Tickets WHERE QRCode = :QRCode";
             await using var connection = _dbContext.DbConnection; // OracleConnection for Oracle DB
-            return await connection.QueryFirstOrDefaultAsync<BuyTicket>(sql, new { QRCode = qrCode });
+            return await connection.QueryFirstOrDefaultAsync<TicketModel>(sql, new { QRCode = qrCode });
         }
         
         public async Task<int> CreateCheckInAsync(int ticketId, string status = "Checked In")
