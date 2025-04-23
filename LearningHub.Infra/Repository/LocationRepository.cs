@@ -82,14 +82,9 @@ namespace LearningHub.Infra.Repository
 
             using var connection = _dbContext.DbConnection;
 
-            var result = await connection.QueryAsync<PinLocationEachEvent, Location, PinLocationEachEvent>(
-                query,
-                (eventModel, location) =>
-                {
-                    eventModel.Location = location;
-                    return eventModel;
-                },
-                splitOn: "LOCATIONID"
+            var result = await connection.QueryAsync< PinLocationEachEvent>(
+                query
+                
             );
 
             return result.ToList();

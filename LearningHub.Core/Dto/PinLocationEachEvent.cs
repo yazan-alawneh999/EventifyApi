@@ -29,12 +29,14 @@ namespace LearningHub.Core.Dto
 
         // Navigation property for EF Core (if needed)
 
-        public Location Location { get; set; }
-        //// Location properties
-        //public int LocationID { get; set; }
-        //public double Latitude { get; set; }
-        //public double Longitude { get; set; }
-        //public string Address { get; set; } = string.Empty;
+  
+      
+       
+       public int LocationID { get; set; } 
+       public double Latitude { get; set; }  
+       public double Longitude { get; set; } 
+       public int EventID { get; set; } 
+      public string Address { get; set; } = string.Empty;
     }
 
 }
