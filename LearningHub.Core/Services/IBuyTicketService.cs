@@ -12,5 +12,8 @@ namespace LearningHub.Core.Services
         public bool BuyTicket(BuyTicket TicketInfo);
         public List<TicketPreviewDto> GetAllTicketsByUserId(decimal userID);
         public Task<string> CheckInByQRCodeAsync(string qrCode);
+        public TicketQR GetTicketsByTicketId(decimal ticketID);
+
+
     }
 }

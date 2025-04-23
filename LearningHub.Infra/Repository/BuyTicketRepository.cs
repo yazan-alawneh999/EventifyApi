@@ -68,6 +68,15 @@ namespace LearningHub.Infra.Repository
             await CreateCheckInAsync(ticket.TicketID);
             return "Check-in successful";
         }
+
+        public TicketQR GetTicketsByTicketId(decimal ticketID)
+        {
+            var p = new DynamicParameters();
+            p.Add("t_Id", ticketID, dbType: DbType.Int32);
+            var result = _dbContext.DbConnection.Query<TicketQR>("Tickets_Package.GetTicketByTicketID", p, commandType: CommandType.StoredProcedure).SingleOrDefault();
+            return result;
+        }
+
         public async Task<TicketModel?> GetTicketByQRCodeAsync(string qrCode)
         {
             var sql = "SELECT * FROM Tickets WHERE QRCode = :QRCode";
@@ -92,8 +101,12 @@ namespace LearningHub.Infra.Repository
             var count = await connection.ExecuteScalarAsync<int>(sql, new { TicketID = ticketId });
             return count > 0;
         }
+        
+        
 
     }
+    
+    
   
 
 }
