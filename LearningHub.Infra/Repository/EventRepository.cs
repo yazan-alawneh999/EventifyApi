@@ -104,6 +104,7 @@ namespace LearningHub.Infra.Repository
             var result = _dbContext.DbConnection.Execute(
                 "event_package.deleteEvent", p, commandType: CommandType.StoredProcedure);
         }
+       
 
         public List<Event> GetAllEvent()
         {
