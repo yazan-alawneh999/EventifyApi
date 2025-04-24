@@ -3,9 +3,11 @@ using LearningHub.Core.Repository;
 using LearningHub.Core.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dapper;
 
 namespace LearningHub.Infra.Services
 {
@@ -33,7 +35,14 @@ namespace LearningHub.Infra.Services
 
         public async Task<string> CheckInByQRCodeAsync(string qrCode)
         {return await  _buyTicketRepository.CheckInByQRCodeAsync(qrCode);}
+
+        public TicketQR GetTicketsByTicketId(decimal ticketID)
+        {
+           return _buyTicketRepository.GetTicketsByTicketId(ticketID);
         }
+    }
+    
+  
     
 
 }

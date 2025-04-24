@@ -15,5 +15,7 @@ namespace LearningHub.Core.Repository
 
 
         public Task<string> CheckInByQRCodeAsync(string qrCode);
+
+        public TicketQR GetTicketsByTicketId(decimal ticketID);
     }
 }
