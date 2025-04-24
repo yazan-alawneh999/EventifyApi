@@ -25,13 +25,16 @@ namespace LearningHubAPI.Controllers
         [HttpGet]
         [Route("GetAllEvent")]
         [Authorize]
-        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1" })]
+        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1", "2", "3" })] // 1 admin, 2 org, 3 user
+
         public List<Event> GetAllEvent() 
         {
            return eventService.GetAllEvent();
         }
         [HttpGet]
         [Route("getEventByID/{ID}")]
+        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1", "2", "3" })] // 1 admin, 2 org, 3 user
+
         public Event getEventByID(int ID) 
         {
             return eventService.getEventByID(ID);
@@ -39,11 +42,14 @@ namespace LearningHubAPI.Controllers
 
         [HttpPost]
         [Route("CreateEvent")]
+        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1", "2" })] // 1 admin, 2 org, 3 user
+
         public void CreateEvent(Event Event) 
         {
             eventService.CreateEvent(Event);
         }
 
+        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1", "2"})] // 1 admin, 2 org, 3 user
 
         [HttpPut]
         [Route("UpdateEvent")]
@@ -52,8 +58,11 @@ namespace LearningHubAPI.Controllers
             eventService.UpdateEvent(Event);
         }
 
+     
         [HttpDelete]
-        [Route("deleteEvent")]
+        [Route("DeleteEventByID/{ID}")]
+        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1", "2"})] // 1 admin, 2 org, 3 user
+
         public void deleteEvent(int ID)
         {
             eventService.deleteEvent(ID);   
@@ -62,7 +71,9 @@ namespace LearningHubAPI.Controllers
 
        [HttpGet]
 [Route("GetAllFeedbackInEachEvent")]
-public async Task<IActionResult> GetAllFeedbackInEachEvent()
+        [IdentityRequiresClaims(ClaimTypes.Role, new[] { "1", "2", "3" })] // 1 admin, 2 org, 3 user
+
+        public async Task<IActionResult> GetAllFeedbackInEachEvent()
 {
     try
     {

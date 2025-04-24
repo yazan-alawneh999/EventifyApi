@@ -109,6 +109,18 @@ namespace LearningHub.Infra.Repository
             return result;
         }
 
+        public async Task<Location> getLocationByEventID(int ID)
+        {
+            var query = "SELECT * FROM LOCATIONS WHERE eventid = :ID";
+
+            using var connection = _dbContext.DbConnection;
+
+
+            var result = await connection.QuerySingleOrDefaultAsync<Location>(query, new { ID });
+
+            return result;
+        }
+
         public async Task<bool> updateLocation(Location location)
         {
             var query = @"

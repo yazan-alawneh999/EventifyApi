@@ -41,6 +41,11 @@ namespace LearningHub.Infra.Services
             return await _locationRepository.getAllPinLocationEachEvent();
         }
 
+        public async Task<Location> getLocationByEventID(int id)
+        {
+            return await _locationRepository.getLocationByEventID(id);
+        }
+
         public Task<Location> getLocationByID(int ID)
         {
           return _locationRepository.getLocationByID(ID);

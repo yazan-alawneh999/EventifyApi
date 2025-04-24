@@ -87,55 +87,7 @@ namespace LearningHub.Infra.Repository
                 "event_package.UpdateEvent", p, commandType: CommandType.StoredProcedure);
         }
 
-        //public async Task<List<EventWithFeedBackDto>> GetAllFeedbackInEachEvent()
-        //{
-        //    var query = @"
-        //SELECT e.CAPACITY, e.EVENTID, e.EVENTNAME,  
-        //      f.FEEDBACKID, f.MESSAGE, f.RATING, f.USERID, f.FEEDBACKDATE,
-        //      p.USERID, p.FIRSTNAME, p.LASTNAME, p.AGE, p.PROFILEIMAGE, p.PHONENUMBER 
-        //FROM EVENTS e
-        //INNER JOIN FEEDBACKS f ON f.EVENTID = e.EVENTID
-        //INNER JOIN PROFILE p ON f.USERID = p.USERID
-        //";
-
-        //    var eventDictionary = new Dictionary<int, EventWithFeedBackDto>();
-
-        //    var eventsWithFeedbacks = await _dbContext.DbConnection.QueryAsync<EventWithFeedBackDto, Feedback, ProfileDto, EventWithFeedBackDto>(
-        //        query,
-        //        (eventModel, feedback, profile) =>
-        //        {
-
-        //            Console.WriteLine($"Event Capacity: {eventModel.CAPACITY}");
-
-
-        //            if (!eventDictionary.TryGetValue((int)eventModel.EVENTID, out var eventEntry))
-        //            {
-        //                eventEntry = new EventWithFeedBackDto
-        //                {
-        //                    EVENTID = eventModel.EVENTID,
-        //                    EventName = eventModel.EventName,
-        //                    CAPACITY = eventModel.CAPACITY,
-        //                    Feedbacks = new List<Feedback>(),
-        //                    ProfileDto = new List<ProfileDto>()
-        //                };
-        //                eventDictionary.Add((int)eventModel.EVENTID, eventEntry);
-        //            }
-
-
-        //            eventEntry.Feedbacks.Add(feedback);
-        //            eventEntry.ProfileDto.Add(profile);
-
-        //            return eventEntry;
-        //        },
-        //                        splitOn: "FEEDBACKID,USERID"
-        //                    );
-
-
-        //    return eventDictionary.Values.ToList();
-        //}
-
-
-
+        
 
     }
 }
